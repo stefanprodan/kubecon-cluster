@@ -15,7 +15,7 @@ kubectl get pods --all-namespaces
 #### Step 1
 
 ```shell
-cd podinfo
+cd /workspace/podinfo
 echo "#" >> Makefile
 git add . && git commit -m "my first build" && git push origin master
 ```
@@ -41,8 +41,19 @@ In the IDE edit `podinfo-dep.yaml` inside `workspace/cluster/dev` to be
 image: gcr.io/dx-training/USER-podinfo:master-TAG
 ```
 
+Or use this script
+
+```bash
+cd /workspace/ && \
+export MASTER_TAG=$(gcloud container images list-tags gcr.io/dx-training/${IDE_USERNAME}-podinfo | grep master |  awk '{print $2}') && \
+sed -i.bak "s,quay.io/stefanprodan/podinfo:0.2.1,gcr.io/dx-training/${IDE_USERNAME}-podinfo:${MASTER_TAG},g" ./cluster/dev/podinfo-dep.yaml && \
+rm ./cluster/dev/podinfo-dep.yaml.bak
+```
+
+Commit the changes to master
+
 ```shell
-cd ../cluster/dev
+cd /workspace/cluster
 git add . && git commit -m "my first deploy" && git push origin master
 ```
 
