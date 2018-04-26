@@ -15,8 +15,8 @@ kubectl get pods --all-namespaces
 #### Step 1
 
 ```shell
-cd /workspace/podinfo
-echo "#" >> Makefile
+cd /workspace/podinfo && \
+echo "#" >> Makefile && \
 git add . && git commit -m "my first build" && git push origin master
 ```
 
@@ -41,21 +41,23 @@ In the IDE edit `podinfo-dep.yaml` inside `workspace/cluster/dev` to be
 image: gcr.io/dx-training/USER-podinfo:master-TAG
 ```
 
-Or use this script
+Or use this sed command
 
 ```bash
-cd /workspace/ && \
+cd /workspace/cluster && \
 export MASTER_TAG=$(gcloud container images list-tags gcr.io/dx-training/${IDE_USERNAME}-podinfo | grep master |  awk '{print $2}') && \
-sed -i.bak "s,quay.io/stefanprodan/podinfo:0.2.1,gcr.io/dx-training/${IDE_USERNAME}-podinfo:${MASTER_TAG},g" ./cluster/dev/podinfo-dep.yaml && \
-rm ./cluster/dev/podinfo-dep.yaml.bak
+sed -i.bak "s,quay.io/stefanprodan/podinfo:0.2.1,gcr.io/dx-training/${IDE_USERNAME}-podinfo:${MASTER_TAG},g" ./dev/podinfo-dep.yaml && \
+rm ./dev/podinfo-dep.yaml.bak
 ```
 
 Commit the changes to master
 
 ```shell
-cd /workspace/cluster
+cd /workspace/cluster && \
 git add . && git commit -m "my first deploy" && git push origin master
 ```
+
+
 
 #### Step 4
 
@@ -69,8 +71,8 @@ watch kubectl -n dev get deployments
 Note the Cluster-IP.
 
 ```shell
-kubectl -n dev get svc
-curl CLUSTER-IP:9898/version
+export CLUSTER_IP=$(kubectl -n dev get svc podinfo -o jsonpath='{.spec.clusterIP}') && \ 
+curl ${CLUSTER_IP}:9898/version
 ```
 
 #### Step 6
