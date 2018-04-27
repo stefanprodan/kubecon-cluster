@@ -4,15 +4,6 @@ kind: Service
 metadata:
   name: podinfo
   namespace: dev
-  annotations:
-    getambassador.io/config: |
-      ---
-      apiVersion: ambassador/v0
-      kind: Mapping
-      name: podinfo
-      prefix: /
-      host: podinfo.test
-      service: podinfo.dev:9898
 spec:
   type: ClusterIP
   ports:
