@@ -46,7 +46,7 @@ Or use this sed command
 ```bash
 cd /workspace/cluster && \
 export MASTER_TAG=$(gcloud container images list-tags gcr.io/dx-training/${IDE_USERNAME}-podinfo | grep master |  awk '{print $2}') && \
-sed -i.bak "s,quay.io/stefanprodan/podinfo:0.2.1,gcr.io/dx-training/${IDE_USERNAME}-podinfo:${MASTER_TAG},g" ./dev/podinfo-dep.yaml && \
+sed -i.bak "s,quay.io/stefanprodan/podinfo:0.3.0,gcr.io/dx-training/${IDE_USERNAME}-podinfo:${MASTER_TAG},g" ./dev/podinfo-dep.yaml && \
 rm ./dev/podinfo-dep.yaml.bak
 ```
 
@@ -98,14 +98,14 @@ git add . && git commit -m "automate deploy" && git push origin master
 Edit `podinfo/pkg/version/version.go` to be:
 
 ```go
-var VERSION = "0.2.3"
+var VERSION = "0.3.1"
 ```
 
 ```shell
 cd ../../podinfo
-git add .  && git commit -m "release v0.2.3 to dev" && git push origin master
-git tag 0.2.3
-git push origin 0.2.3
+git add .  && git commit -m "release v0.3.1 to dev" && git push origin master
+git tag 0.3.1
+git push origin 0.3.1
 ```
 
 #### Step 8
